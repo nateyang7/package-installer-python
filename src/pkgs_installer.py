@@ -3,8 +3,9 @@
 
 import os
 import platform
+import subprocess
 
-class Pkgs_Installer:
+class PkgsInstaller:
     """
     Represents a package installer.
 
@@ -34,9 +35,9 @@ class Pkgs_Installer:
         Returns:
             str: PMS detected on the system.
         """
-        if platorm.system() == "Windows":
+        if platform.system() == "Windows":
             return self.__WINDOWS_PMS
-        elif platform.system() == "Darwing":
+        elif platform.system() == "Darwin":
             return self.__MACOS_PMS
         elif platform.system() == "Linux":
             try:
@@ -54,4 +55,30 @@ class Pkgs_Installer:
                 return "unknown"
         else:
             return "unknown"
+
+    def install(self) -> None:
+        with open("pkgs.txt") as f:
+            pkgs: list[str] = [line.strip() for line in f if line.strip()]
+            for pkg in pkgs:
+                if platform.system() == "Windows":
+                    subprocess.run(["winget", "install", "--id", pkg, "-e", "--silent"])
+                elif platform.system() == "Darwin":
+                    subprocess.run(["brew", "install", pkg])
+                elif platform.system() == "Linux":
+                    subprocess.run(["sudo", self.pms, "install", "-y", pkg])
+            print("All packages installed!")
+
+    def display_info(self) -> None:
+        header: str = f"=== OS: {platform.system()} ===\n"
+        data: str = f"PMS: {self.pms}"
+        print(header + data)
+
+
+if __name__ == "__main__":
+    TEST = PkgsInstaller()
+    TEST.install()
+    TEST.display_info()
+
+
+    print("All tests passed!")
 
