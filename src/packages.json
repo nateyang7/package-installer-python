@@ -1,0 +1,17 @@
+{
+    "vim": {
+        "windows": "vim.vim",
+        "linux": "vim",
+        "macos": "vim"
+    },
+    "git": {
+        "windows": "git.git",
+        "linux": "git",
+        "macos": "git"
+    },
+    "python": {
+        "windows": "Python.Python.3",
+        "linux": "python3",
+        "macos": "python"
+    },
+}

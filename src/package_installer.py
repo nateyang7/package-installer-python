@@ -65,7 +65,8 @@ class PackageInstaller:
         with open(self.__PACKAGES_FILEPATH, "r",  encoding="utf-8") as f:
             packages: list[str] = [line.strip() for line in f if line.strip()]
             for package in packages:
-               if 
+                if os.name == "nt":
+                    
             print("All packages installed!")
 
     def display_info(self) -> None:
