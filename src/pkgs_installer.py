@@ -1,4 +1,9 @@
 """
+Author: Nathan Yang
+TO-DO:
+    1)
+    2)
+    3)
 """
 
 import os
@@ -78,7 +83,6 @@ if __name__ == "__main__":
     TEST = PkgsInstaller()
     TEST.install()
     TEST.display_info()
-
 
     print("All tests passed!")
 

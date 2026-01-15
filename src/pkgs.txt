@@ -1,3 +1,5 @@
 python
 git
 vim
+thunderbird
+vlc
