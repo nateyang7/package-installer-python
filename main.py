@@ -18,6 +18,8 @@ def install_packages() -> int:
     """
     global PACKAGES
     if platform.system() == "Windows":
+        for package in PACKAGES[platform.system()]:
+            subprocess.run(["winget", "install", "--id", package])
         return 0
     elif platform.system() == "Linux":
         subprocess.run(["sudo", "apt", "update", "&&", "full-upgrade", "-y"])
