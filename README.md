@@ -3,15 +3,22 @@
 Packages installer automated installation of packages on Windows and Unix.
 
 ## Table of contents
-- [[##Installation]]
-- [[##Usage]]
-- [[##Features]]
+- [Installation](##Installation)
+- [Usage](##Usage)
+- [Features](##Features)
 
 ## Installation
-Download the repository.
+### Manually
+Download the ZIP file and extract it in a directory of your choice.
+
+### With Git
+Execute the next command in a directory of your choice:
+```bash
+git clone https://github.com/NateYang7/package-installer-python.git
+```
 
 ## Usage
-Execute the main file with `py main.py` in a shell.
+Execute the main file with `py main.py` in a shell or a IDE of your choice.
 
 ## Features
 - [X] Install packages for Windows
