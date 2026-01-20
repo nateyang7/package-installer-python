@@ -18,7 +18,7 @@ git clone https://github.com/NateYang7/package-installer-python.git
 ```
 
 ## Usage
-Execute the main file with `py main.py` in a shell or a IDE of your choice.
+Execute the main file with `py main.py` in a shell or an IDE of your choice.
 
 ## Features
 - [X] Install packages for Windows
