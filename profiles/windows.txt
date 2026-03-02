@@ -1,0 +1,3 @@
+Git.Git
+Neovim.Neovim
+Python.Python.3.10
