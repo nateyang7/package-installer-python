@@ -1,32 +1,36 @@
 # src/package_installer/package_installer.py
 
-import os
-from packages import *
+import platform
 
-def install_packages(pkg_manager: dict) -> int:
+class PackageInstaller:
     """
-    Install packages depending on the package_manager.
+    Represents a package installer.
 
-    Args:
-
-    Returns:
+    Attributes:
+        os (str): Operating system detected by the package installer.
+        package_manager (str): Package manager from the operating system.
     """
-    package_managers: list[str] = list(pkg_manager.keys())
-    for package_manager in package_managers:
-        if package_manager != "winget":
-            os.system(f"sudo apt update && sudo apt full-upgrade")
-            for package in packages:
-                os.system(f"sudo {package_manager} install {package} -y")
-            return 0
+
+    def __init__(self) -> None:
+        """
+        Initializes a package installer.
+        """
+        self.os = platform.system()
+        self.package_manager = self.get_package_manager()
+        self.packages_filepath = self.get_packages_filepath()
+
+    def get_package_manager(self) -> str:
+        if self.os == "Windows":
+            return "winget"
+        elif self.os == "Linux":
+            return "apt"  # Only support for Ubuntu / Debian (WILL SEE FOR OTHER DISTROS)
+        elif self.os == "Darwin":
+            return "brew"
         else:
-            os.system(f"winget upgrade --id Microsoft.AppInstaller")
-            for package in packages:
-                os.system("winget install --id {package} -e")
-            return 0
-        return 1
+            ...
 
+    def get_packages_filepath(self) -> str:
+        ...
 
-if __name__ == "__main__":
-    install_packages(PACKAGE_MANAGERS)  # OK
-
-    print("All tests passed")
+    def install_packages(self) -> None:
+        ...
