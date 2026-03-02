@@ -1,10 +1,4 @@
-"""
-Author: Nathan Yang
-Notes:
-    - [] Support Windows
-    - [X] Support Linux 
-    - [] Support Windows
-"""
+# src/package_installer/package_installer.py
 
 import os
 from packages import *

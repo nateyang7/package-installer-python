@@ -1,0 +1,13 @@
+[project]
+name = "package-installer-python"
+version = "0.1.0"
+description = "Tool to install packages from a file"
+requires-python = ">=3.10"
+
+[tool.pytest.ini_options]
+testpaths = [
+    "tests"
+]
+pythonpath = [
+    "src"
+]
