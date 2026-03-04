@@ -1,9 +1,9 @@
 # src/package_installer/package_installer.py
 
-from platform import system
+import platform
 import subprocess
 
-INSTALLATION_SUCCESS: int = 0
+INSTALLATION_ERROR: int = 0
 ERROR_PACKAGE_NOT_FOUND: str = "No package found matching input criteria."
 
 def install_packages(packages: list[str]) -> None:
@@ -21,16 +21,14 @@ def install_packages(packages: list[str]) -> None:
     """
     installed_packages: dict[str, str] = {package: '?' for package in packages}
 
-    if system == "Windows":
+    if platform.system() == "Windows":
         for package in packages:
             installation: subprocess.CompletedProcess[bytes] = subprocess.run(
                 ["winget", "install", "--id", package, "-e"],
                 capture_output=True,
                 text=True
             )
-            print(installation.stdout)
-            if installation.returncode == INSTALLATION_SUCCESS:
-                print(installation.stdout)
+            if installation.returncode != INSTALLATION_ERROR:
                 installed_packages[package] = "Installed"
             else:
                 installed_packages[package] = installation.returncode
@@ -56,8 +54,10 @@ def remove_packages(packages: list[str]) -> None:
 
 
 if __name__ == "__main__":
-    test_packages: list[str] = ["potato", "apple"]
+    test_success_packages: list[str] = ["Git.Git", "Mozilla.Firefox", "potato"]
+    test_error_packages: list[str] = ["apple", "potato", "banana"]
 
-    install_packages(test_packages)
+    install_packages(test_success_packages)
+    install_packages(test_error_packages)
 
     print("All tests passed!")
