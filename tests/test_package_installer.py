@@ -1,23 +1,11 @@
 # tests/test_package_installer.py
 
 import pytest
-import platform
-from src.package_installer.package_installer import PackageInstaller
+from os.path import join
+from package_installer.package_installer import *
 
-@pytest.fixture
-def package_installer() -> PackageInstaller:
-    return PackageInstaller()
+TEST_PACKAGES_FILE: str = join("tests", "windows_packages_test.txt")
 
+def test_get_packages() -> None:
 
-def test_get_package_manager(package_installer: PackageInstaller) -> None:
-    if platform.system() == "Windows":
-        assert package_installer.get_package_manager() == "winget"
-    elif platform.system() == "Linux":
-        assert package_installer.get_package_manager() == "apt"
-    elif platform.system() == "Darwin":
-        assert package_installer.get_package_manager() == "brew"
-
-
-def test_get_packages(package_installer: PackageInstaller) -> None:
-    if platform.system() == "Windows":
-        assert package_installer.get_packages() == ["Git.Git", "Neovim.Neovim", "Python.Python.3.10"]
+    assert get_packages(TEST_PACKAGES_FILE) == ["Notepad++.Notepad++", "Git.Git", "python"]

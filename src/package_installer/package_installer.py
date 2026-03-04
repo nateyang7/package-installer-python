@@ -25,6 +25,20 @@ def display_packages_status(packages: dict[str, str]) -> None:
         print(f"{package_name} => {packages[package]}")
 
 
+def get_packages(filepath: str) -> list[str]:
+    """
+    Returns packages list from a file.
+
+    Args:
+        filepath (str): Path to the packages file.
+
+    Returns:
+        list[str]: List of packages contained at filepath.
+    """
+    with open(filepath, "r", encoding="utf-8") as f:
+        return [package.strip() for package in f.readlines()]
+
+
 def install_packages(packages: list[str]) -> None:
     """
     Install packages contained in a list.

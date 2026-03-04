@@ -1,0 +1,3 @@
+Notepad++.Notepad++
+Git.Git
+python
