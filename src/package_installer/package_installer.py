@@ -4,16 +4,15 @@ import platform
 import subprocess
 
 INSTALLATION_ERROR: int = 0
-PACKAGE_INSTALLATION_SUCCESS: str = ""
+PACKAGE_INSTALLATION_SUCCESS: str = "Successfully installed"
 PACKAGE_ALREADY_INSTALLED: str = "Found"
-ERROR_PACKAGE_NOT_FOUND: str = "No package found matching input criteria."
 
-def display_packages_status(packages: dict) -> None:
+def display_packages_status(packages: dict[str, str]) -> None:
     """
     Display status for each package contained in a dict.
 
     Args:
-        packages (dict): Packages dict.
+        packages (dict[str, str]): Dictionnary with packages and their status.
     
     Returns:
         None.
@@ -22,10 +21,8 @@ def display_packages_status(packages: dict) -> None:
 
     print("=== PACKAGES ===")
     for package in packages:
-        if len(package) == name_length:
-            print(f"{package} => {packages[package]}")
-        else:
-            print(f"{package + ' ' * (name_length - len(package))} => {packages[package]}")
+        package_name: str = package + ' ' * (name_length - len(package))
+        print(f"{package_name} => {packages[package]}")
 
 
 def install_packages(packages: list[str]) -> None:
@@ -50,7 +47,7 @@ def install_packages(packages: list[str]) -> None:
                 capture_output=True,
                 text=True
             )
-            if PACKAGE_INSTALLATION_SUCCESS in installation.stdout.strip().split():
+            if installation.stdout.strip().find(PACKAGE_INSTALLATION_SUCCESS):
                 installed_packages[package] = "Installed"
             elif PACKAGE_ALREADY_INSTALLED in installation.stdout.strip().split():
                 installed_packages[package] = "Already Installed"
@@ -75,10 +72,10 @@ def remove_packages(packages: list[str]) -> None:
 
 
 if __name__ == "__main__":
-    test_success_packages: list[str] = ["Git.Git", "Mozilla.Firefox", "potato"]
-    #test_error_packages: list[str] = ["apple", "potato", "banana"]
+    # Ensure that git is installed before testing
+    test_windows_packages: list[str] = ["Notepad++.Notepad++", "Git.Git", "python"]
 
-    install_packages(test_success_packages)
-    #install_packages(test_error_packages)  # => Verify return code
+    #remove_packages()
+    install_packages(test_windows_packages)
 
     print("All tests passed!")
