@@ -2,17 +2,7 @@
 
 import platform
 import subprocess
-
-# Package manger
-WINDOWS_PKGM: str = "winget"
-LINUX_PKGM: str = "apt"
-MACOS_PKGM: str = "brew"
-
-# Installation / Removal status
-INSTALLATION_ERROR: int = 0
-PACKAGE_INSTALLATION_SUCCESS: str = "Successfully installed"
-PACKAGE_ALREADY_INSTALLED: str = "Found"
-PACKAGE_REMOVAL_SUCCESS: str = "Successfully uninstalled"
+from constants import *
 
 def display_packages_status(packages: dict[str, str]) -> None:
     """

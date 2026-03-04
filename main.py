@@ -1,7 +1,5 @@
-"""
-TO-DO:
-    - [] 
-"""
+# main.py
+
 from package_installer import *
 
 def main() -> int:
