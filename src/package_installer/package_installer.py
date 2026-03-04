@@ -2,8 +2,21 @@
 
 import platform
 import subprocess
-from constants import *
+from enum import StrEnum
 
+# === Constants & Enums ===
+class PackageManager(StrEnum):
+    WINDOWS = "winget"
+    LINUX = "apt"
+    MACOS = "brew"
+
+INSTALLATION_ERROR: int = 0
+PACKAGE_INSTALLATION_SUCCESS: str = "Successfully installed"
+PACKAGE_ALREADY_INSTALLED: str = "Found"
+PACKAGE_REMOVAL_SUCCESS: str = "Successfully uninstalled"
+
+
+# === Functions ===
 def display_packages_status(packages: dict[str, str]) -> None:
     """
     Display status for each package contained in a dict.
@@ -56,7 +69,7 @@ def install_packages(packages: list[str]) -> None:
     if platform.system() == "Windows":
         for package in packages:
             installation: subprocess.CompletedProcess[bytes] = subprocess.run(
-                [WINDOWS_PKGM, "install", "--id", package, "-e"],
+                [PackageManager.WINDOWS, "install", "--id", package, "-e"],
                 capture_output=True,
                 text=True
             )
@@ -66,6 +79,12 @@ def install_packages(packages: list[str]) -> None:
                 packages_status[package] = "Already Installed"
             else:
                 packages_status[package] = "Package not found"
+
+    elif platform.system() == "Linux":
+        ...
+    
+    elif platform.system() == "Darwin":
+        ...
 
     # LOGS
     display_packages_status(packages_status)
@@ -87,7 +106,7 @@ def remove_packages(packages: list[str]) -> None:
     if platform.system() == "Windows":
         for package in packages:
             removal: subprocess.CompletedProcess[bytes] = subprocess.run(
-                [WINDOWS_PKGM, "uninstall", "--id", package],
+                [PackageManager.WINDOWS, "uninstall", "--id", package],
                 capture_output=True,
                 text=True
             )
@@ -101,12 +120,6 @@ def remove_packages(packages: list[str]) -> None:
 
 
 if __name__ == "__main__":
-    # MUST FOLLOW -> [NOT_INSTALLED, INSTALLED, UNKNOWN]
-    TEST_WINDOWS_PACKAGES: list[str] = ["Notepad++.Notepad++", "Git.Git", "pyton"]
-    TEST_LINUX_PACKAGES: list[str] = ["gedit", "git", "pyton"]
-
-    # WINDOWS: Ensure that you are on a windows machine before testing
-    install_packages(TEST_WINDOWS_PACKAGES)
-    remove_packages([TEST_WINDOWS_PACKAGES[0], ])
+    install_packages(["Neovim.Neovim", "WiresharkFoundation.Wireshark"])
 
     print("All tests passed!")

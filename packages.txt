@@ -1,0 +1,3 @@
+Mozilla.Firefox
+Neovim.Neovim
+WiresharkFoundation.Wireshark
