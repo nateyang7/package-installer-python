@@ -15,7 +15,7 @@ git clone https://github.com/NateYang7/package-installer-python.git
 ```
 
 ## Usage
-Execute the main file with `py main.py` in a shell or an IDE of your choice.
+While in the repository, execute `python main.py` in a shell or an IDE of your choice.
 
 ## Configuration
 `packages.txt` is your configuration file for packages installation.

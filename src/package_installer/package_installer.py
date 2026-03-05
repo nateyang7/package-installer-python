@@ -73,6 +73,7 @@ def install_packages(packages: list[str]) -> None:
                 capture_output=True,
                 text=True
             )
+
             if installation.stdout.strip().find(PACKAGE_INSTALLATION_SUCCESS) != -1:
                 packages_status[package] = "Installed"
             elif PACKAGE_ALREADY_INSTALLED in installation.stdout.strip().split():
@@ -81,10 +82,21 @@ def install_packages(packages: list[str]) -> None:
                 packages_status[package] = "Package not found"
 
     elif platform.system() == "Linux":
-        ...
+        for package in packages:
+            installation: subprocess.CompletedProcess[bytes] = subprocess.run(
+                [PackageManager.LINUX, "install", package],
+                text=True
+            )
+
+            print(installation.stdout)
     
     elif platform.system() == "Darwin":
-        ...
+        for package in packages:
+            installation: subprocess.CompletedProcess[bytes] = subprocess.run(
+                [PackageManager.MACOS, "install", package],
+                capture_output=True,
+                text=True
+            )
 
     # LOGS
     display_packages_status(packages_status)
