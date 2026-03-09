@@ -83,12 +83,20 @@ def install_packages(packages: list[str]) -> None:
 
     elif platform.system() == "Linux":
         for package in packages:
+            update: subprocess.CompletedProcess[bytes] = subprocess.run(
+                ["sudo", PackageManager.LINUX, "update"],
+                text=True
+            )
             installation: subprocess.CompletedProcess[bytes] = subprocess.run(
-                [PackageManager.LINUX, "install", package],
+                ["sudo", PackageManager.LINUX, "install", package],
                 text=True
             )
 
-            print(installation.stdout)
+            if installation.returncode != 0:
+                packages_status[package] = "Installed"
+            else:
+                packages_status[package] = "Package not found"
+
     
     elif platform.system() == "Darwin":
         for package in packages:

@@ -1,7 +1,6 @@
 # main.py
 
-from package_installer.package_installer import *
-from package_installer.package_manager import *
+from src.package_installer import *
 
 def main() -> int:
     packages: list[str] = get_packages("packages.txt")
