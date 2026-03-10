@@ -1,0 +1,17 @@
+{
+    "Windows": [
+        "Notepad++.Notepad++",
+        "Git.Git",
+        "pyton"
+    ],
+    "Linux": [
+        "notepad-plus-plus",
+        "git",
+        "pyton"
+    ],
+    "Darwin": [
+        "notepad-plus-plus",
+        "git",
+        "pyton"
+    ]
+}

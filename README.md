@@ -29,8 +29,8 @@ While in the repository, execute `python main.py` in a shell or an IDE of your c
 
 ### Linux
 - [X] Install packages for Debian distributions (Core)
-- [ ] Install packages for Red Had / RPM distributions (Core)
-- [ ] Install packages for Arch distributions (Core)=
+- [ ] Install packages for Red Had / RPM distributions (OPT)
+- [ ] Install packages for Arch distributions (OPT)
 
 ### MacOS
 - [X] Install packages with **brew** (Core)
