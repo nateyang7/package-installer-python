@@ -2,6 +2,7 @@
 
 import platform
 import subprocess
+import json
 from enum import StrEnum
 
 # === Constants & Enums ===
@@ -36,6 +37,7 @@ def display_packages_status(packages: dict[str, str]) -> None:
     print()
 
 
+'''
 def get_packages(filepath: str) -> list[str]:
     """
     Returns packages list from a file.
@@ -48,6 +50,22 @@ def get_packages(filepath: str) -> list[str]:
     """
     with open(filepath, "r", encoding="utf-8") as f:
         return [package.strip() for package in f.readlines()]
+'''
+
+
+def get_json_packages(filepath: str) -> list[str]:
+    """
+    Returns packages list from a JSON file.
+
+    Args:
+        filepath (str): Path to JSON file.
+
+    Returns:
+        list[str]: List of packages contained at filepath.
+    """
+    with open(filepath, "r") as f:
+        packages: dict[str, list[str]] = json.load(f)
+        return packages[platform.system()]
 
 
 def install_packages(packages: list[str]) -> None:
@@ -83,10 +101,12 @@ def install_packages(packages: list[str]) -> None:
 
     elif platform.system() == "Linux":
         for package in packages:
+            """
             update: subprocess.CompletedProcess[bytes] = subprocess.run(
                 ["sudo", PackageManager.LINUX, "update"],
                 text=True
             )
+            """
             installation: subprocess.CompletedProcess[bytes] = subprocess.run(
                 ["sudo", PackageManager.LINUX, "install", package],
                 text=True
@@ -106,8 +126,7 @@ def install_packages(packages: list[str]) -> None:
                 text=True
             )
 
-    # LOGS
-    display_packages_status(packages_status)
+    display_packages_status(packages_status)  # LOGS
 
 
 def remove_packages(packages: list[str]) -> None:
@@ -140,6 +159,7 @@ def remove_packages(packages: list[str]) -> None:
 
 
 if __name__ == "__main__":
-    install_packages(["Neovim.Neovim", "WiresharkFoundation.Wireshark"])
+    #install_packages(["Neovim.Neovim", "WiresharkFoundation.Wireshark"])  # OK
+    #print(get_json_packages("packages.json"))  # OK
 
     print("All tests passed!")

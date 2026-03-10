@@ -1,0 +1,18 @@
+{
+    "Windows": [
+        "Mozilla.Firefox",
+        "Git.Git",
+        "Neovim.Neovim"
+    ],
+    "Linux": [
+        "firefox",
+        "git",
+        "neovim"
+
+    ],
+    "Darwin": [
+        "firefox",
+        "git",
+        "neovim"
+    ]
+}
