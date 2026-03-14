@@ -1,14 +1,19 @@
-# Packages installer in Python
+# Packages Installer
 
 ## Description
-**package-installer-python** is a tool designed to install software packages by standardizing and unifying the installation process across environments. This 
-project is intended for educational purposes only.
+**package-installer-python** is a tool designed to install software packages 
+by standardizing and unifying the installation process across environments. 
+This project is intended for educational purposes only.
 
 ## Table of contents
+- [Requirements](##Requirements)
 - [Installation](##Installation)
 - [Usage](##Usage)
 - [Configuration](##Configuration)
 - [Features](##Features)
+
+## Requirements
+- `python3`
 
 ## Installation
 ```bash
@@ -16,7 +21,8 @@ git clone https://github.com/NateYang7/package-installer-python.git
 ```
 
 ## Usage
-While in the repository, execute `python main.py` in a shell or an IDE of your choice.
+While in the repository, execute `python main.py` in a shell or an IDE of 
+your choice.
 
 ## Configuration
 `packages.json` is your configuration file for packages installation.
