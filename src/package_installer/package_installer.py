@@ -7,15 +7,14 @@ from enum import StrEnum
 
 # === Constants & Enums ===
 class PackageManager(StrEnum):
-    WINDOWS = "winget"
-    LINUX = "apt"
-    MACOS = "brew"
+    WINDOWS = 'winget'
+    LINUX = 'apt'
+    MACOS = 'brew'
 
 INSTALLATION_ERROR: int = 0
-PACKAGE_INSTALLATION_SUCCESS: str = "Successfully installed"
-PACKAGE_ALREADY_INSTALLED: str = "Found"
-PACKAGE_REMOVAL_SUCCESS: str = "Successfully uninstalled"
-
+PACKAGE_INSTALLATION_SUCCESS: str = 'Successfully installed'
+PACKAGE_ALREADY_INSTALLED: str = 'Found'
+PACKAGE_REMOVAL_SUCCESS: str = 'Successfully uninstalled'
 
 # === Functions ===
 def display_packages_status(packages: dict[str, str]) -> None:
@@ -30,10 +29,10 @@ def display_packages_status(packages: dict[str, str]) -> None:
     """
     name_length: int = max(len(package_name) for package_name in packages.keys())
 
-    print("=== PACKAGES ===")
+    print('=== PACKAGES ===')
     for package in packages:
         package_name: str = package + ' ' * (name_length - len(package))
-        print(f"{package_name} => {packages[package]}")
+        print(f'{package_name} => {packages[package]}')
     print()
 
 
@@ -63,7 +62,7 @@ def get_json_packages(filepath: str) -> list[str]:
     Returns:
         list[str]: List of packages contained at filepath.
     """
-    with open(filepath, "r") as f:
+    with open(filepath, 'r', encoding='utf-8') as f:
         packages: dict[str, list[str]] = json.load(f)
         return packages[platform.system()]
 
@@ -83,23 +82,23 @@ def install_packages(packages: list[str]) -> None:
     """
     packages_status: dict[str, str] = {package: '' for package in packages}
 
-    print("INSTALLING PACKAGES...")
-    if platform.system() == "Windows":
+    print('INSTALLING PACKAGES...')
+    if platform.system() == 'Windows':
         for package in packages:
             installation: subprocess.CompletedProcess[bytes] = subprocess.run(
-                [PackageManager.WINDOWS, "install", "--id", package, "-e"],
+                [PackageManager.WINDOWS, 'install', '--id', package, '-e'],
                 capture_output=True,
                 text=True
             )
 
             if installation.stdout.strip().find(PACKAGE_INSTALLATION_SUCCESS) != -1:
-                packages_status[package] = "Installed"
+                packages_status[package] = 'Installed'
             elif PACKAGE_ALREADY_INSTALLED in installation.stdout.strip().split():
-                packages_status[package] = "Already Installed"
+                packages_status[package] = 'Already Installed'
             else:
-                packages_status[package] = "Package not found"
+                packages_status[package] = 'Package not found'
 
-    elif platform.system() == "Linux":
+    elif platform.system() == 'Linux':
         for package in packages:
             """
             update: subprocess.CompletedProcess[bytes] = subprocess.run(
@@ -108,25 +107,25 @@ def install_packages(packages: list[str]) -> None:
             )
             """
             installation: subprocess.CompletedProcess[bytes] = subprocess.run(
-                ["sudo", PackageManager.LINUX, "install", package],
+                ['sudo', PackageManager.LINUX, 'install', package],
                 text=True
             )
 
             if installation.returncode != 0:
-                packages_status[package] = "Installed"
+                packages_status[package] = 'Installed'
             else:
-                packages_status[package] = "Package not found"
+                packages_status[package] = 'Package not found'
 
     
-    elif platform.system() == "Darwin":
+    elif platform.system() == 'Darwin':
         for package in packages:
             installation: subprocess.CompletedProcess[bytes] = subprocess.run(
-                [PackageManager.MACOS, "install", package],
+                [PackageManager.MACOS, 'install', package],
                 capture_output=True,
                 text=True
             )
 
-    display_packages_status(packages_status)  # LOGS
+    display_packages_status(packages_status)
 
 
 def remove_packages(packages: list[str]) -> None:
@@ -141,25 +140,19 @@ def remove_packages(packages: list[str]) -> None:
     """
     packages_status: dict[str, str] = {package: '' for package in packages}
 
-    print("REMOVING PACKAGES...")
-    if platform.system() == "Windows":
+    print('REMOVING PACKAGES...')
+    if platform.system() == 'Windows':
         for package in packages:
             removal: subprocess.CompletedProcess[bytes] = subprocess.run(
-                [PackageManager.WINDOWS, "uninstall", "--id", package],
+                [PackageManager.WINDOWS, 'uninstall', '--id', package],
                 capture_output=True,
                 text=True
             )
 
             if removal.stdout.strip().find(PACKAGE_REMOVAL_SUCCESS) != -1:
-                packages_status[package] = "UNINSTALLED"
+                packages_status[package] = 'UNINSTALLED'
             else:
                 packages_status[package] = removal.stderr
 
     display_packages_status(packages_status)
 
-
-if __name__ == "__main__":
-    #install_packages(["Neovim.Neovim", "WiresharkFoundation.Wireshark"])  # OK
-    #print(get_json_packages("packages.json"))  # OK
-
-    print("All tests passed!")
