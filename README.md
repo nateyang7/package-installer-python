@@ -35,8 +35,8 @@ your choice.
 
 ### Linux
 - [X] Install packages for Debian distributions (Core)
-- [ ] Install packages for Red Had / RPM distributions (OPT)
-- [ ] Install packages for Arch distributions (OPT)
+- [X] Install packages for Red Had / RPM distributions (Core)
+- [X] Install packages for Arch distributions (Core)
 
 ### MacOS
 - [X] Install packages with **brew** (Core)

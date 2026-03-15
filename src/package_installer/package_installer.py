@@ -3,14 +3,8 @@
 import platform
 import subprocess
 import json
-from enum import StrEnum
 
 # === Constants & Enums ===
-class PackageManager(StrEnum):
-    WINDOWS = 'winget'
-    LINUX = 'apt'
-    MACOS = 'brew'
-
 INSTALLATION_ERROR: int = 0
 PACKAGE_INSTALLATION_SUCCESS: str = 'Successfully installed'
 PACKAGE_ALREADY_INSTALLED: str = 'Found'
@@ -29,27 +23,11 @@ def display_packages_status(packages: dict[str, str]) -> None:
     """
     name_length: int = max(len(package_name) for package_name in packages.keys())
 
-    print('=== PACKAGES ===')
+    print('\n=== PACKAGES ===')
     for package in packages:
         package_name: str = package + ' ' * (name_length - len(package))
         print(f'{package_name} => {packages[package]}')
     print()
-
-
-'''
-def get_packages(filepath: str) -> list[str]:
-    """
-    Returns packages list from a file.
-
-    Args:
-        filepath (str): Path to the packages file.
-
-    Returns:
-        list[str]: List of packages contained at filepath.
-    """
-    with open(filepath, "r", encoding="utf-8") as f:
-        return [package.strip() for package in f.readlines()]
-'''
 
 
 def get_json_packages(filepath: str) -> list[str]:
@@ -65,6 +43,24 @@ def get_json_packages(filepath: str) -> list[str]:
     with open(filepath, 'r', encoding='utf-8') as f:
         packages: dict[str, list[str]] = json.load(f)
         return packages[platform.system()]
+
+
+def get_linux_package_manager() -> str:
+    """
+    Returns package manager on a Linux distribution.
+
+    Returns:
+        str: Package manager from the current Linux distribution.
+    """
+    with open('/etc/os-release', 'r') as f:
+        info: str = f.read().lower()
+
+    if 'ubuntu' in info or 'debian' in info:
+        return 'apt'
+    elif 'fedora' in info or 'centos' in info or 'rhel' in info:
+        return 'dnf'
+    elif 'arch' in info:
+        return 'pacman'
 
 
 def install_packages(packages: list[str]) -> None:
@@ -86,7 +82,7 @@ def install_packages(packages: list[str]) -> None:
     if platform.system() == 'Windows':
         for package in packages:
             installation: subprocess.CompletedProcess[bytes] = subprocess.run(
-                [PackageManager.WINDOWS, 'install', '--id', package, '-e'],
+                ['winget', 'install', '--id', package, '-e'],
                 capture_output=True,
                 text=True
             )
@@ -99,20 +95,15 @@ def install_packages(packages: list[str]) -> None:
                 packages_status[package] = 'Package not found'
 
     elif platform.system() == 'Linux':
+        package_manager = get_linux_package_manager()
         for package in packages:
-            """
-            update: subprocess.CompletedProcess[bytes] = subprocess.run(
-                ["sudo", PackageManager.LINUX, "update"],
-                text=True
-            )
-            """
             installation: subprocess.CompletedProcess[bytes] = subprocess.run(
-                ['sudo', PackageManager.LINUX, 'install', package],
+                ['sudo', package_manager, 'install', package],
                 text=True
             )
 
-            if installation.returncode != 0:
-                packages_status[package] = 'Installed'
+            if installation.returncode == 0:
+                packages_status[package] = 'Installed / Already Installed'
             else:
                 packages_status[package] = 'Package not found'
 
@@ -120,7 +111,7 @@ def install_packages(packages: list[str]) -> None:
     elif platform.system() == 'Darwin':
         for package in packages:
             installation: subprocess.CompletedProcess[bytes] = subprocess.run(
-                [PackageManager.MACOS, 'install', package],
+                ['brew', 'install', package],
                 capture_output=True,
                 text=True
             )
